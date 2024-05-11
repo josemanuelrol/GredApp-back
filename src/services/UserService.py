@@ -19,7 +19,7 @@ class UserService():
     def obtener_usuario_por_id(self, id):
         current_app.logger.info("Service -> obtener_usuario_por_id()")
         response = self.userRepository.get_user_by_id(id)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("Usuario no encontrado")
@@ -30,7 +30,7 @@ class UserService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido modificar el usuario")
+            raise Exception("Usuario no encontrado")
         
     def eliminar_usuario(self,id):
         current_app.logger.info("Service -> eliminar_usuario()")
@@ -38,4 +38,4 @@ class UserService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido eliminar el usuario")
+            raise Exception("Usuario no encontrado")

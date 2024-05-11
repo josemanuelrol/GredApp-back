@@ -13,24 +13,24 @@ class UserRepository():
     def create_user(self,body):
         current_app.logger.info("DB -> create_user()")
         response = self.db.insert_one(body)
-        return response.inserted_id
+        return str(response.inserted_id)
     
     def get_users(self):
         current_app.logger.info("DB -> get_users()")
         response = self.db.find()
-        return response
+        return json_util.dumps(response)
     
     def get_user_by_id(self, id_user):
         current_app.logger.info("DB -> get_user_by_id()")
         response = self.db.find_one({'_id':ObjectId(id_user)})
-        return response
+        return json_util.dumps(response)
     
     def update_user(self, id_user, body):
         current_app.logger.info("DB -> update_user()")
         response = self.db.update_one({'_id':ObjectId(id_user)}, {'$set': body})
-        return response.modified_count
+        return int(response.modified_count)
     
     def delete_user(self, id_user):
         current_app.logger.info("DB -> delete_user()")
         response = self.db.delete_one({'_id':ObjectId(id_user)})
-        return response.deleted_count
+        return int(response.deleted_count)

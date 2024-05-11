@@ -11,7 +11,7 @@ class NotaService():
     def crear_nota(self,body):
         current_app.logger.info("Service -> crear_nota()")
         response = self.notaRepository.create_note(body)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("No se ha podido crear la nota")
@@ -24,7 +24,7 @@ class NotaService():
     def obtener_nota_por_id(self,id):
         current_app.logger.info("Service -> obtener_nota_por_id()")
         response = self.notaRepository.get_note_by_id(id)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("Nota no encontrada")
@@ -35,7 +35,7 @@ class NotaService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido modificar la nota")
+            raise Exception("Nota no encontrada")
         
     def eliminar_nota(self,id):
         current_app.logger.info("Service -> eliminar_nota()")
@@ -43,4 +43,4 @@ class NotaService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido eliminar la nota")
+            raise Exception("Nota no encontrada")

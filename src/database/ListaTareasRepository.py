@@ -13,25 +13,25 @@ class ListaTareasRepository():
     def create_listaTareas(self, body):
         current_app.logger.info("DB -> create_listaTareas()")
         response = self.db.insert_one(body)
-        return response.inserted_id
+        return str(response.inserted_id)
     
     def get_all_listaTareas(self):
         current_app.logger.info("DB -> get_all_listaTareas()")
         response = self.db.find()
-        return response
+        return json_util.dumps(response)
     
     def get_listaTareas_by_id(self,id_lista):
         current_app.logger.info("DB -> get_listaTareas_by_id()")
         response = self.db.find_one({'_id':ObjectId(id_lista)})
-        return response
+        return json_util.dumps(response)
     
     def update_listaTareas(self, id_lista, body):
         current_app.logger.info("DB -> update_listaTareas()")
         response = self.db.update_one({'_id':ObjectId(id_lista)},{'$set': body})
-        return response.modified_count
+        return int(response.modified_count)
     
     def delete_listaTareas(self, id_lista):
         current_app.logger.info("DB -> delete_listaTareas()")
         response = self.db.delete_one({'_id':ObjectId(id_lista)})
-        return response.deleted_count
+        return int(response.deleted_count)
     

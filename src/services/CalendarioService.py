@@ -11,7 +11,7 @@ class CalendarioService():
     def crear_calendario(self,body):
         current_app.logger.info("Service -> crear_calendario()")
         response = self.calendarioRepository.create_calendar(body)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("No se ha podido crear el calendario")
@@ -24,7 +24,7 @@ class CalendarioService():
     def obtener_calendario_por_id(self,id):
         current_app.logger.info("Service -> obtener_calendario_por_id()")
         response = self.calendarioRepository.get_calendar_by_id(id)
-        if response:
+        if response != 'null' :
             return response
         else:
             raise Exception("Calendario no encontrado")
@@ -35,7 +35,7 @@ class CalendarioService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido modificar el calendario")
+            raise Exception("Calendario no encontrado")
         
     def eliminar_calendario(self,id):
         current_app.logger.info("Service -> eliminar_calendario()")
@@ -43,5 +43,5 @@ class CalendarioService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido eliminar el calendario")
+            raise Exception("Calendario no encontrado")
         

@@ -11,7 +11,7 @@ class TareaService():
     def crear_tarea(self,body):
         current_app.logger.info("Service -> crear_tarea()")
         response = self.tareaRepository.create_task(body)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("No se ha podido crear la tarea")
@@ -24,10 +24,10 @@ class TareaService():
     def obtener_tarea_por_id(self,id):
         current_app.logger.info("Service -> obtener_tarea_por_id()")
         response = self.tareaRepository.get_task_by_id(id)
-        if response:
+        if response != 'null':
             return response
         else:
-            raise Exception("Usuario no encontrado")
+            raise Exception("Tarea no encontrado")
         
     def modificar_tarea(self,id,body):
         current_app.logger.info("Service -> modificar_tarea()")
@@ -35,7 +35,7 @@ class TareaService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podidido modificar la tarea")
+            raise Exception("Tarea no encontrado")
         
     def eliminar_tarea(self,id):
         current_app.logger.info("Service -> eliminar_tarea()")
@@ -43,6 +43,6 @@ class TareaService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido eliminar la tarea")
+            raise Exception("Tarea no encontrado")
 
 

@@ -11,7 +11,7 @@ class ListaTareasService():
     def crear_listaTareas(self,body):
         current_app.logger.info("Service -> crear_listaTareas()")
         response = self.listaTareaRepo.create_listaTareas(body)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("No se ha podido crear la lista de tareas")
@@ -24,7 +24,7 @@ class ListaTareasService():
     def obtener_listaTareas_por_id(self,id):
         current_app.logger.info("Service -> obtener_listaTareas_por_id()")
         response = self.listaTareaRepo.get_listaTareas_by_id(id)
-        if response:
+        if response != 'null':
             return response
         else:
             raise Exception("Lista de tareas no encontrada")
@@ -35,7 +35,7 @@ class ListaTareasService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido modificar la lista de tareas")
+            raise Exception("Lista de tareas no encontrada")
         
     def eliminar_listaTareas(self,id):
         current_app.logger.info("Service -> eliminar_listaTareas()")
@@ -43,4 +43,4 @@ class ListaTareasService():
         if response>0:
             return response
         else:
-            raise Exception("No se ha podido eliminar la lista de tareas")
+            raise Exception("Lista de tareas no encontrada")

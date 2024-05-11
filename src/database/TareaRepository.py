@@ -13,24 +13,24 @@ class TareaRepository():
     def create_task(self, body):
         current_app.logger.info("DB -> create_task()")
         response = self.db.insert_one(body)
-        return response.inserted_id
+        return str(response.inserted_id)
     
     def get_all_tasks(self):
         current_app.logger.info("DB -> get_all_tasks()")
         response = self.db.find()
-        return response
+        return json_util.dumps(response)
     
     def get_task_by_id(self, id_task):
         current_app.logger.info("DB -> get_task_by_id()")
         response = self.db.find_one({'_id':ObjectId(id_task)})
-        return response
+        return json_util.dumps(response)
     
     def update_task(self, id_task, body):
         current_app.logger.info("DB -> update_task()")
         response = self.db.update_one({'_id':ObjectId(id_task)},{'$set':body})
-        return response.modified_count
+        return int(response.modified_count)
     
     def delete_task(self, id_task):
         current_app.logger.info("DB -> delete_task()")
         response = self.db.delete_one({'_id':ObjectId(id_task)})
-        return response.deleted_count
+        return int(response.deleted_count)

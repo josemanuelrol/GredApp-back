@@ -13,24 +13,24 @@ class CalendarioRepository():
     def create_calendar(self, body):
         current_app.logger.info("DB -> create_calendar()")
         response = self.db.insert_one(body)
-        return response.inserted_id
+        return str(response.inserted_id)
     
     def get_all_calendars(self):
         current_app.logger.info("DB -> get_all_calendars()")
         response = self.db.find()
-        return response
+        return json_util.dumps(response)
     
     def get_calendar_by_id(self,id_calendar):
         current_app.logger.info("DB -> get_calendar_by_id()")
         response = self.db.find_one({'_id':ObjectId(id_calendar)})
-        return response
+        return json_util.dumps(response)
     
     def update_calendar(self,id_calendar, body):
         current_app.logger.info("DB -> update_calendar()")
         response = self.db.update_one({'_id':ObjectId(id_calendar)}, {'$set': body})
-        return response.modified_count
+        return int(response.modified_count)
     
     def delete_calendar(self, id_calendar):
         current_app.logger.info("DB -> delete_calendar()")
         response = self.db.delete_one({'_id':ObjectId(id_calendar)})
-        return response.deleted_count
+        return int(response.deleted_count)
