@@ -10,11 +10,29 @@ class UserService():
 
     def crear_usuario(self,body):
         current_app.logger.info("Service -> crear_usuario()")
+        try:
+            user = json_util.loads(self.obtener_usuario_por_username(body['username']))
+        except Exception:
+            response = self.userRepository.create_user(body)
+            if response != 'null':
+                return response
+            else:
+                raise Exception("No se ha podido crear el usuario")
+        if user:
+            raise Exception("El usuario ya existe")
 
     def obtener_usuarios(self):
         current_app.logger.info("Services -> obtener_usuarios()")
         response = self.userRepository.get_users()
         return response
+    
+    def obtener_usuario_por_username(self,username):
+        current_app.logger.info("Service -> obtener_usuario_por_username()")
+        response = self.userRepository.get_user_by_username(username)
+        if response != 'null':
+            return response
+        else:
+            raise Exception("Usuario no encontrado")
     
     def obtener_usuario_por_id(self, id):
         current_app.logger.info("Service -> obtener_usuario_por_id()")

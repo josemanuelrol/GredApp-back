@@ -1,16 +1,38 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.UserService import UserService
+from src.services.AuthService import AuthService
 
 class UserController():
 
-    def __init__(self, userService:UserService):
+    def __init__(self, userService:UserService, authService:AuthService):
         self.api_bp = Blueprint('user', __name__, url_prefix='/api')
         self.userService = userService
+        self.authService = authService
         self.init_routes()
 
     def init_routes(self):
         #Aquí van los endpoints
+
+        @self.api_bp.route('/auth/login',methods=['POST'])
+        def login():
+            try:
+                current_app.logger.info("API -> login()")
+                body = request.get_json()
+                if not body or not isinstance(body,dict):
+                    raise Exception("Formato json no valido")
+                
+                if not all(key in body for key in ('username', 'password')):
+                    raise Exception("Falta algún campo")
+                
+                token = self.authService.login(body['username'],body['password'])
+                
+                response = jsonify({'login':True,'token':token})
+                response.headers['Authorization'] = f'{token}'
+                return response
+            except Exception as e:
+                return jsonify({'error':str(e)})
+                
 
         @self.api_bp.route('/user', methods=['POST'])
         def crear_usuario():

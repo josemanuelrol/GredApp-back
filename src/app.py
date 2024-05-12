@@ -13,6 +13,7 @@ from src.services.NotaService import NotaService
 from src.services.EventoService import EventoService
 from src.services.CalendarioService import CalendarioService
 from src.services.ListaTareasService import ListaTareasService
+from src.services.AuthService import AuthService
 from src.routes.UserController import UserController
 from src.routes.TareaController import TareaController
 from src.routes.NotaController import NotaController
@@ -44,9 +45,10 @@ def create_app(config):
     eventoService = EventoService(eventoRepository)
     calendarioService = CalendarioService(calendarioRepository)
     listaTareasService = ListaTareasService(listaTareasRepository)
+    authService = AuthService(userService)
 
     #Configuramos los controladores
-    userController = UserController(userService)
+    userController = UserController(userService,authService)
     app.register_blueprint(userController.api_bp)
     tareaController = TareaController(tareaService)
     app.register_blueprint(tareaController.api_bp)
