@@ -2,6 +2,7 @@
 from flask import current_app
 from bson import json_util
 from src.database.CalendarioRepository import CalendarioRepository
+from src.models.CalendarioNotFoundException import CalendarioNotFoundException
 
 class CalendarioService():
     
@@ -27,21 +28,23 @@ class CalendarioService():
         if response != 'null' :
             return response
         else:
-            raise Exception("Calendario no encontrado")
+            raise CalendarioNotFoundException()
         
     def modificar_calendario(self,id,body):
         current_app.logger.info("Service -> modificar_calendario()")
+        self.obtener_calendario_por_id(id)
         response = self.calendarioRepository.update_calendar(id,body)
         if response>0:
             return response
         else:
-            raise Exception("Calendario no encontrado")
+            raise Exception("No se pudo modificar el calendario")
         
     def eliminar_calendario(self,id):
         current_app.logger.info("Service -> eliminar_calendario()")
+        self.obtener_calendario_por_id(id)
         response = self.calendarioRepository.delete_calendar(id)
         if response>0:
             return response
         else:
-            raise Exception("Calendario no encontrado")
+            raise Exception("No se pudo eliminar el calendario")
         

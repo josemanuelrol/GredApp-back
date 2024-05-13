@@ -1,6 +1,7 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.CalendarioService import CalendarioService
+from src.models.CalendarioNotFoundException import CalendarioNotFoundException
 
 class CalendarioController():
 
@@ -37,7 +38,7 @@ class CalendarioController():
                 current_app.logger.info("API -> obtener_calendario_por_id()")
                 response = self.calendarioService.obtener_calendario_por_id(id)
                 return Response(response, mimetype='application/json')
-            except Exception as e:
+            except CalendarioNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             
         @self.api_bp.route('/calendario/<id>', methods=['PUT'])
@@ -47,8 +48,10 @@ class CalendarioController():
                 body = request.get_json()
                 self.calendarioService.modificar_calendario(id,body)
                 return jsonify({'mensaje':'Calendario modificado'})
-            except Exception as e:
+            except CalendarioNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
             
         @self.api_bp.route('/calendario/<id>', methods=['DELETE'])
         def eliminar_caledario(id):
@@ -56,5 +59,7 @@ class CalendarioController():
                 current_app.logger.info("API -> eliminar_calendario()")
                 self.calendarioService.eliminar_calendario(id)
                 return jsonify({'mensaje':'Calendario eliminado'})
-            except Exception as e:
+            except CalendarioNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400

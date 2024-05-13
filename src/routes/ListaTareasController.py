@@ -1,6 +1,7 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.ListaTareasService import ListaTareasService
+from src.models.ListaTareasNotFoundException import ListaTareasNotFoundException
 
 class ListaTareasController():
 
@@ -37,7 +38,7 @@ class ListaTareasController():
                 current_app.logger.info("API -> obtener_listaTareas_por_id()")
                 response = self.listaTareasService.obtener_listaTareas_por_id(id)
                 return Response(response, mimetype='application/json')
-            except Exception as e:
+            except ListaTareasNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             
         @self.api_bp.route('/listaTareas/<id>', methods=['PUT'])
@@ -47,8 +48,10 @@ class ListaTareasController():
                 body = request.get_json()
                 self.listaTareasService.modificar_listaTareas(id,body)
                 return jsonify({'mensaje':'Lista de tareas modificada'})
-            except Exception as e:
+            except ListaTareasNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
             
         @self.api_bp.route('/listaTareas/<id>', methods=['DELETE'])
         def eliminar_listaTareas(id):
@@ -56,5 +59,7 @@ class ListaTareasController():
                 current_app.logger.info("API -> eliminar_listaTareas()")
                 self.listaTareasService.eliminar_listaTareas(id)
                 return jsonify({'mensaje':'Lista de tareas eliminada'})
+            except ListaTareasNotFoundException as e:
+                return jsonify({'error':str(e)}),404
             except Exception as e:
-                return jsonify({'error':str(e)})
+                return jsonify({'error':str(e)}),400

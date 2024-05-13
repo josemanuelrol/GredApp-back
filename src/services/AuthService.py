@@ -18,7 +18,7 @@ class AuthService():
     def login(self,usuario,password):
         #Obtener usuario de la BD
         user = json_util.loads(self.userService.obtener_usuario_por_username(usuario))
-
+        
         #Verificamos la contraseña
         if not self.verifyPassword(password, user):
             raise Exception("Contraseña Incorrecta")

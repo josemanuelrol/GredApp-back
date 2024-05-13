@@ -2,6 +2,7 @@
 from flask import current_app
 from bson import json_util
 from src.database.UserRepository import UserRepository
+from src.models.UserNotFoundException import UserNotFoundException
 
 class UserService():
     
@@ -32,7 +33,7 @@ class UserService():
         if response != 'null':
             return response
         else:
-            raise Exception("Usuario no encontrado")
+            raise UserNotFoundException()
     
     def obtener_usuario_por_id(self, id):
         current_app.logger.info("Service -> obtener_usuario_por_id()")
@@ -40,20 +41,22 @@ class UserService():
         if response != 'null':
             return response
         else:
-            raise Exception("Usuario no encontrado")
+            raise UserNotFoundException()
     
     def modificar_usuario(self,id,body):
         current_app.logger.info("Service -> modificar_usuario()")
+        self.obtener_usuario_por_id(id)
         response = self.userRepository.update_user(id,body)
         if response>0:
             return response
         else:
-            raise Exception("Usuario no encontrado")
+            raise Exception("No se pudo modificar el usuario")
         
     def eliminar_usuario(self,id):
         current_app.logger.info("Service -> eliminar_usuario()")
+        self.obtener_usuario_por_id(id)
         response = self.userRepository.delete_user(id)
         if response>0:
             return response
         else:
-            raise Exception("Usuario no encontrado")
+            raise Exception("No se pudo eliminar el usuario")

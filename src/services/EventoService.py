@@ -2,6 +2,7 @@
 from flask import current_app
 from bson import json_util
 from src.database.EventoRepository import EventoRepository
+from src.models.EventoNotFoundException import EventoNotFoundException
 
 class EventoService():
     
@@ -27,20 +28,22 @@ class EventoService():
         if response != 'null':
             return response
         else:
-            raise Exception("Evento no encontrado")
+            raise EventoNotFoundException()
         
     def modificar_evento(self,id,body):
         current_app.logger.info("Service -> modificar_evento()")
+        self.obtener_evento_por_id(id)
         response = self.eventoRepository.update_event(id,body)
         if response>0:
             return response
         else:
-            raise Exception("Evento no encontrado")
+            raise Exception("No se pudo modificar el evento")
         
     def eliminar_evento(self,id):
         current_app.logger.info("Service -> eliminar_evento()")
+        self.obtener_evento_por_id(id)
         response = self.eventoRepository.delete_event(id)
         if response>0:
             return response
         else:
-            raise Exception("Evento no encontrado")
+            raise Exception("No se pudo eliminar el evento")

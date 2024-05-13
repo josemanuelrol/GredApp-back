@@ -2,6 +2,7 @@
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.UserService import UserService
 from src.services.AuthService import AuthService
+from src.models.UserNotFoundException import UserNotFoundException
 
 class UserController():
 
@@ -59,7 +60,7 @@ class UserController():
                 current_app.logger.info("API -> obtener_usuario_por_id()")
                 response = self.userService.obtener_usuario_por_id(id)
                 return Response(response, mimetype='application/json')
-            except Exception as e:
+            except UserNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             
         @self.api_bp.route('/user/<id>', methods=['PUT'])
@@ -69,8 +70,10 @@ class UserController():
                 body = request.get_json()
                 self.userService.modificar_usuario(id,body)
                 return jsonify({'mensaje':'Usuario modificado'})
-            except Exception as e:
+            except UserNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
             
         @self.api_bp.route('/user/<id>', methods=['DELETE'])
         def eliminar_usuario(id):
@@ -78,5 +81,7 @@ class UserController():
                 current_app.logger.info("API -> eliminar_usuario()")
                 self.userService.eliminar_usuario(id)
                 return jsonify({'mensaje':'Usuario eliminado'})
+            except UserNotFoundException as e:
+                return jsonify({'error':str(e)}),404
             except Exception as e:
-                return jsonify({'error':str(e)})
+                return jsonify({'error':str(e)}),400

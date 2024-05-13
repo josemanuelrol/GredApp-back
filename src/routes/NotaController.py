@@ -1,6 +1,7 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.NotaService import NotaService
+from src.models.NotaNotFoundException import NotaNotFoundException
 
 class NotaController():
 
@@ -37,7 +38,7 @@ class NotaController():
                 current_app.logger.info("API -> obtener_nota_por_id()")
                 response = self.notaService.obtener_nota_por_id(id)
                 return Response(response, mimetype='application/json')
-            except Exception as e:
+            except NotaNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             
         @self.api_bp.route('/nota/<id>', methods=['PUT'])
@@ -47,8 +48,10 @@ class NotaController():
                 body = request.get_json()
                 self.notaService.modificar_nota(id,body)
                 return jsonify({'mensaje':'Nota modificada'})
-            except Exception as e:
+            except NotaNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
             
         @self.api_bp.route('/nota/<id>', methods=['DELETE'])
         def eliminar_nota(id):
@@ -56,5 +59,7 @@ class NotaController():
                 current_app.logger.info("API -> eliminar_nota()")
                 self.notaService.eliminar_nota(id)
                 return jsonify({'mensaje':'Nota eliminada'})
+            except NotaNotFoundException as e:
+                return jsonify({'error':str(e)}),404
             except Exception as e:
-                return jsonify({'error':str(e)})
+                return jsonify({'error':str(e)}),400

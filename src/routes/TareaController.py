@@ -1,6 +1,7 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
 from src.services.TareaService import TareaService
+from src.models.TareaNotFoundException import TareaNotFoundException
 
 class TareaController():
 
@@ -37,7 +38,7 @@ class TareaController():
                 current_app.logger.info("API -> obtener_tarea_por_id()")
                 response = self.tareaService.obtener_tarea_por_id(id)
                 return Response(response, mimetype='application/json')
-            except Exception as e:
+            except TareaNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             
         @self.api_bp.route('/tarea/<id>', methods=['PUT'])
@@ -47,8 +48,10 @@ class TareaController():
                 body = request.get_json()
                 self.tareaService.modificar_tarea(id,body)
                 return jsonify({'mensaje':'Tarea modificada'})
-            except Exception as e:
+            except TareaNotFoundException as e:
                 return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
             
         @self.api_bp.route('/tarea/<id>', methods=['DELETE'])
         def eliminar_tarea(id):
@@ -56,5 +59,7 @@ class TareaController():
                 current_app.logger.info("API -> eliminar_tarea()")
                 self.tareaService.eliminar_tarea(id)
                 return jsonify({'mensaje':'Tarea eliminada'})
+            except TareaNotFoundException as e:
+                return jsonify({'error':str(e)}),404
             except Exception as e:
-                return jsonify({'error':str(e)})
+                return jsonify({'error':str(e)}),400

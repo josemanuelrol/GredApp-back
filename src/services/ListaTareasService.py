@@ -2,6 +2,7 @@
 from flask import current_app
 from bson import json_util
 from src.database.ListaTareasRepository import ListaTareasRepository
+from src.models.ListaTareasNotFoundException import ListaTareasNotFoundException
 
 class ListaTareasService():
     
@@ -27,20 +28,22 @@ class ListaTareasService():
         if response != 'null':
             return response
         else:
-            raise Exception("Lista de tareas no encontrada")
+            raise ListaTareasNotFoundException()
         
     def modificar_listaTareas(self,id,body):
         current_app.logger.info("Service -> modificar_listaTareas()")
+        self.obtener_listaTareas_por_id(id)
         response = self.listaTareaRepo.update_listaTareas(id,body)
         if response>0:
             return response
         else:
-            raise Exception("Lista de tareas no encontrada")
+            raise Exception("No se pudo modificar la lista de tareas")
         
     def eliminar_listaTareas(self,id):
         current_app.logger.info("Service -> eliminar_listaTareas()")
+        self.obtener_listaTareas_por_id(id)
         response = self.listaTareaRepo.delete_listaTareas(id)
         if response>0:
             return response
         else:
-            raise Exception("Lista de tareas no encontrada")
+            raise Exception("No se pudo eliminar la lista de tareas")

@@ -2,6 +2,7 @@
 from flask import current_app
 from bson import json_util
 from src.database.NotaRepository import NotaRepository
+from src.models.NotaNotFoundException import NotaNotFoundException
 
 class NotaService():
     
@@ -27,20 +28,22 @@ class NotaService():
         if response != 'null':
             return response
         else:
-            raise Exception("Nota no encontrada")
+            raise NotaNotFoundException()
         
     def modificar_nota(self,id,body):
         current_app.logger.info("Service -> modificar_nota()")
+        self.obtener_nota_por_id(id)
         response = self.notaRepository.update_note(id,body)
         if response>0:
             return response
         else:
-            raise Exception("Nota no encontrada")
+            raise Exception("No se pudo modificar la nota")
         
     def eliminar_nota(self,id):
         current_app.logger.info("Service -> eliminar_nota()")
+        self.obtener_nota_por_id(id)
         response = self.notaRepository.delete_note(id)
         if response>0:
             return response
         else:
-            raise Exception("Nota no encontrada")
+            raise Exception("No se pudo eliminar la nota")
