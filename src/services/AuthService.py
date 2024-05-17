@@ -1,5 +1,5 @@
 #Imports
-from flask import request, current_app
+from flask import current_app
 import jwt
 import datetime
 import locale
@@ -17,25 +17,22 @@ class AuthService():
 
     def login(self,usuario,password):
         #Obtener usuario de la BD
-        user = json_util.loads(self.userService.obtener_usuario_por_username(usuario))
-        
+        try:
+            user = json_util.loads(self.userService.obtener_usuario_por_username(usuario))
+        except Exception:
+            raise Exception("Usuario o Contraseña Incorrecta")
         #Verificamos la contraseña
-        if not self.verifyPassword(password, user):
-            raise Exception("Contraseña Incorrecta")
+        self.verifyPassword(password, user)
         
         token = self.generateToken(str(user['_id']))
         return token
     
     def verifyPassword(self, input_password, user):
-        try:
-            stored_password = user['password']
-            if not stored_password:
-                raise ValueError("No existe esa contraseña")
-            if not bcrypt.checkpw(input_password.encode('utf-8'), stored_password.encode('utf-8')):
-                raise ValueError("Contraseña Incorrecta.")
-            return True
-        except ValueError:
-            return False
+        stored_password = user['password']
+        if not stored_password:
+            raise ValueError("Usuario o Contraseña Incorrecta")
+        if not bcrypt.checkpw(input_password.encode('utf-8'), stored_password.encode('utf-8')):
+            raise ValueError("Usuario o Contraseña Incorrecta")
         
     def generateToken(self,user_id):
         payload = {

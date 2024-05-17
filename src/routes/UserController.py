@@ -32,8 +32,26 @@ class UserController():
                 response.headers['Authorization'] = f'{token}'
                 return response
             except Exception as e:
-                return jsonify({'error':str(e)})
+                return jsonify({'error':str(e)}),400
+
+        @self.api_bp.route('/auth/register',methods=['POST'])
+        def register():
+            try:
+                current_app.logger.info("API -> register()")
+                body = request.get_json()
+                if not body or not isinstance(body,dict):
+                    raise Exception("Formato json no válido")
                 
+                if not all(key in body for key in ('username','password','email')):
+                    raise Exception("Falta algún campo")
+                
+                self.userService.crear_usuario(body)
+
+                return jsonify({
+                    'mensaje':'Registrado correctamente',
+                    })
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
 
         @self.api_bp.route('/user', methods=['POST'])
         def crear_usuario():

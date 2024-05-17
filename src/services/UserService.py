@@ -20,7 +20,7 @@ class UserService():
             else:
                 raise Exception("No se ha podido crear el usuario")
         if user:
-            raise Exception("El usuario ya existe")
+            raise Exception("Ya existe un usuario con ese nombre")
 
     def obtener_usuarios(self):
         current_app.logger.info("Services -> obtener_usuarios()")

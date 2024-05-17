@@ -35,7 +35,7 @@ def add_cors_headers(response):
 @app.before_request
 def authenticate():
     if request.method != 'OPTIONS':
-        if (request.endpoint != 'user.login' and request.endpoint != 'user.crear_usuario') and not verifyToken.verifyToken():
+        if (request.endpoint != 'user.login' and request.endpoint != 'user.register') and not verifyToken.verifyToken():
             return jsonify({'error':'Usuario no autorizado'}),401
 
 #Ejecutando aplicación Flask
