@@ -28,10 +28,13 @@ class NotaController():
             
         @self.api_bp.route('/notas', methods=['GET'])
         def obtener_notas():
-            current_app.logger.info("API -> obtener_notas()")
-            response = self.notaService.obtener_notas()
-            return Response(response,mimetype='application/json')
-        
+            try:
+                current_app.logger.info("API -> obtener_notas()")
+                response = self.notaService.obtener_notas()
+                return Response(response,mimetype='application/json')
+            except Exception as e:
+                return jsonify({'error':str(e)}),404
+
         @self.api_bp.route('/nota/<id>', methods=['GET'])
         def obtener_nota_por_id(id):
             try:

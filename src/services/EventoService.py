@@ -1,6 +1,5 @@
 #Imports
 from flask import current_app
-from bson import json_util
 from src.database.EventoRepository import EventoRepository
 from src.models.EventoNotFoundException import EventoNotFoundException
 
@@ -20,7 +19,10 @@ class EventoService():
     def obtener_eventos(self):
         current_app.logger.info("Service -> obtener_eventos()")
         response = self.eventoRepository.get_all_events()
-        return response
+        if response != '[]':
+            return response
+        else:
+            raise Exception("No existen eventos")
     
     def obtener_evento_por_id(self,id):
         current_app.logger.info("Service -> obtener_evento_por_id()")

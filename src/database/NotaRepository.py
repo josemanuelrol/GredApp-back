@@ -25,6 +25,11 @@ class NotaRepository():
         response = self.db.find_one({'_id': ObjectId(id_note)})
         return json_util.dumps(response)
     
+    def get_notes_by_user(self, id_user):
+        current_app.logger.info("DB -> get_notes_by_user()")
+        response = self.db.find({'user_id':id_user})
+        return json_util.dumps(response)
+    
     def update_note(self,id_note,body):
         current_app.logger.info("DB -> update_note()")
         response = self.db.update_one({'_id':ObjectId(id_note)},{'$set':body})

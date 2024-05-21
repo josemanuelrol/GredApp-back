@@ -28,10 +28,13 @@ class CalendarioController():
             
         @self.api_bp.route('/calendarios', methods=['GET'])
         def obtener_calendarios():
-            current_app.logger.info("API -> obtener_calendarios()")
-            response = self.calendarioService.obtener_calendarios()
-            return Response(response, mimetype='application/json')
-        
+            try:
+                current_app.logger.info("API -> obtener_calendarios()")
+                response = self.calendarioService.obtener_calendarios()
+                return Response(response, mimetype='application/json')
+            except Exception as e:
+                return jsonify({'error':str(e)})
+            
         @self.api_bp.route('/calendario/<id>', methods=['GET'])
         def obtener_calendario_por_id(id):
             try:

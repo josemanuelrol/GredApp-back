@@ -1,5 +1,6 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
+from src.models.ListaTareasNotFoundException import ListaTareasNotFoundException
 from src.services.UserService import UserService
 from src.services.AuthService import AuthService
 from src.models.UserNotFoundException import UserNotFoundException
@@ -68,10 +69,13 @@ class UserController():
             
         @self.api_bp.route('/users', methods=['GET'])
         def obtener_usuarios():
-            current_app.logger.info("API -> obtener_usuarios()")
-            response = self.userService.obtener_usuarios()
-            return Response(response,mimetype='application/json')
-        
+            try:
+                current_app.logger.info("API -> obtener_usuarios()")
+                response = self.userService.obtener_usuarios()
+                return Response(response,mimetype='application/json')
+            except Exception as e:
+                return jsonify({'error':str(e)}),404
+
         @self.api_bp.route('/user/<id>', methods=['GET'])
         def obtener_usuario_por_id(id):
             try:
@@ -100,6 +104,27 @@ class UserController():
                 self.userService.eliminar_usuario(id)
                 return jsonify({'mensaje':'Usuario eliminado'})
             except UserNotFoundException as e:
+                return jsonify({'error':str(e)}),404
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
+            
+        
+        @self.api_bp.route('/user/<id>/notas')
+        def obtener_notas_por_user(id):
+            try:
+                current_app.logger.info("API -> obtener_notas_por_user()")
+                response = self.userService.obtener_notas_por_user(id)
+                return Response(response, mimetype='application/json')
+            except Exception as e:
+                return jsonify({'error':str(e)}),404
+            
+        @self.api_bp.route('/user/<user_id>/listaTareas', methods=['GET'])
+        def obtener_listaTareas_por_user(user_id):
+            try:
+                current_app.logger.info("API -> obtener_listaTareas_por_user()")
+                response = self.userService.obtener_listasTareas_por_user(user_id)
+                return Response(response, mimetype='application/json')
+            except ListaTareasNotFoundException as e:
                 return jsonify({'error':str(e)}),404
             except Exception as e:
                 return jsonify({'error':str(e)}),400

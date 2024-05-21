@@ -2,20 +2,17 @@ from flask import Flask
 import logging
 from logging.handlers import RotatingFileHandler
 from src.database.UserRepository import UserRepository
-from src.database.TareaRepository import TareaRepository
 from src.database.CalendarioRepository import CalendarioRepository
 from src.database.EventoRepository import EventoRepository
 from src.database.NotaRepository import NotaRepository
 from src.database.ListaTareasRepository import ListaTareasRepository
 from src.services.UserService import UserService
-from src.services.TareaService import TareaService
 from src.services.NotaService import NotaService
 from src.services.EventoService import EventoService
 from src.services.CalendarioService import CalendarioService
 from src.services.ListaTareasService import ListaTareasService
 from src.services.AuthService import AuthService
 from src.routes.UserController import UserController
-from src.routes.TareaController import TareaController
 from src.routes.NotaController import NotaController
 from src.routes.EventoController import EventoController
 from src.routes.CalendarioController import CalendarioController
@@ -32,26 +29,22 @@ def create_app(config):
 
     #Configuramos los repositorios
     userRepository = UserRepository(app)
-    tareaRepository = TareaRepository(app)
     notaRepository = NotaRepository(app)
     eventoRepository = EventoRepository(app)
     calendarioRepository = CalendarioRepository(app)
     listaTareasRepository = ListaTareasRepository(app)
 
     #Configuramos los servicios
-    userService = UserService(userRepository)
-    tareaService = TareaService(tareaRepository)
+    listaTareasService = ListaTareasService(listaTareasRepository)
+    userService = UserService(userRepository, listaTareasService, notaRepository, listaTareasRepository)
     notaService = NotaService(notaRepository)
     eventoService = EventoService(eventoRepository)
     calendarioService = CalendarioService(calendarioRepository)
-    listaTareasService = ListaTareasService(listaTareasRepository)
     authService = AuthService(userService)
 
     #Configuramos los controladores
     userController = UserController(userService,authService)
     app.register_blueprint(userController.api_bp)
-    tareaController = TareaController(tareaService)
-    app.register_blueprint(tareaController.api_bp)
     notaController = NotaController(notaService)
     app.register_blueprint(notaController.api_bp)
     eventoController = EventoController(eventoService)

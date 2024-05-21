@@ -1,6 +1,5 @@
 #Imports
 from flask import current_app
-from bson import json_util
 from src.database.NotaRepository import NotaRepository
 from src.models.NotaNotFoundException import NotaNotFoundException
 
@@ -20,7 +19,10 @@ class NotaService():
     def obtener_notas(self):
         current_app.logger.info("Service -> obtener_notas()")
         response = self.notaRepository.get_all_notes()
-        return response
+        if response != '[]':
+            return response
+        else:
+            raise Exception("No existen notas")
     
     def obtener_nota_por_id(self,id):
         current_app.logger.info("Service -> obtener_nota_por_id()")

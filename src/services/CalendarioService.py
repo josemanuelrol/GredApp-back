@@ -1,6 +1,5 @@
 #Imports
 from flask import current_app
-from bson import json_util
 from src.database.CalendarioRepository import CalendarioRepository
 from src.models.CalendarioNotFoundException import CalendarioNotFoundException
 
@@ -20,7 +19,10 @@ class CalendarioService():
     def obtener_calendarios(self):
         current_app.logger.info("Service -> obtener_calendarios()")
         response = self.calendarioRepository.get_all_calendars()
-        return response
+        if response != '[]':
+            return response
+        else:
+            raise Exception("No existen calendarios")
     
     def obtener_calendario_por_id(self,id):
         current_app.logger.info("Service -> obtener_calendario_por_id()")
