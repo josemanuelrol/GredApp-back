@@ -27,9 +27,9 @@ class UserController():
                 if not all(key in body for key in ('username', 'password')):
                     raise Exception("Falta algún campo")
                 
-                token = self.authService.login(body['username'],body['password'])
+                token, user = self.authService.login(body['username'],body['password'])
                 
-                response = jsonify({'login':True,'token':token})
+                response = jsonify({'login':True,'token':token, 'user_id':str(user['_id'])})
                 response.headers['Authorization'] = f'{token}'
                 return response
             except Exception as e:

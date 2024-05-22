@@ -54,6 +54,7 @@ class ListaTareasRepository():
 
     def add_tarea(self, id_lista, task):
         current_app.logger.info("DB -> add_tarea()")
+        task['completed'] = False
         task['_id'] = ObjectId()
         response = self.db.update_one({'_id':ObjectId(id_lista)}, {'$push':{'tareas':task}})
         return int(response.modified_count)

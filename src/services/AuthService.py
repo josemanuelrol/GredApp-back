@@ -25,7 +25,7 @@ class AuthService():
         self.verifyPassword(password, user)
         
         token = self.generateToken(str(user['_id']))
-        return token
+        return token,user
     
     def verifyPassword(self, input_password, user):
         stored_password = user['password']
