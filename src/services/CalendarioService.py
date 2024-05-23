@@ -19,10 +19,7 @@ class CalendarioService():
     def obtener_calendarios(self):
         current_app.logger.info("Service -> obtener_calendarios()")
         response = self.calendarioRepository.get_all_calendars()
-        if response != '[]':
-            return response
-        else:
-            raise Exception("No existen calendarios")
+        return response
     
     def obtener_calendario_por_id(self,id):
         current_app.logger.info("Service -> obtener_calendario_por_id()")

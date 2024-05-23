@@ -19,10 +19,7 @@ class EventoService():
     def obtener_eventos(self):
         current_app.logger.info("Service -> obtener_eventos()")
         response = self.eventoRepository.get_all_events()
-        if response != '[]':
-            return response
-        else:
-            raise Exception("No existen eventos")
+        return response
     
     def obtener_evento_por_id(self,id):
         current_app.logger.info("Service -> obtener_evento_por_id()")

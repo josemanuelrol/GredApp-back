@@ -83,12 +83,9 @@ class ListaTareasController():
 
         @self.api_bp.route('listaTareas/<id>/getTasks', methods=['GET'])
         def obtener_tareas(id):
-            try:
-                current_app.logger.info("API -> obtener_tareas()")
-                response = self.listaTareasService.obtener_tareas(id)
-                return Response(response, mimetype='application/json')
-            except Exception as e:
-                return jsonify({'error':str(e)}),404
+            current_app.logger.info("API -> obtener_tareas()")
+            response = self.listaTareasService.obtener_tareas(id)
+            return Response(response, mimetype='application/json')
             
         @self.api_bp.route('listaTareas/<id>/getTask/<id_task>', methods=['GET'])
         def obtener_tarea_por_id(id,id_task):

@@ -58,11 +58,7 @@ class ListaTareasService():
         current_app.logger.info("Service -> obtener_tareas()")
         self.obtener_listaTareas_por_id(id_lista)
         response = self.listaTareaRepo.get_tareas(id_lista)
-        tareas = json_util.loads(response)
-        if tareas['tareas'] != []:
-            return response
-        else:
-            raise Exception("Esta lista no tiene tareas")
+        return response
         
     def obtener_tarea_por_id(self,id_lista,id_task):
         current_app.logger.info("Service -> obtener_tarea_por_id()")

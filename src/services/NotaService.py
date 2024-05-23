@@ -19,10 +19,7 @@ class NotaService():
     def obtener_notas(self):
         current_app.logger.info("Service -> obtener_notas()")
         response = self.notaRepository.get_all_notes()
-        if response != '[]':
-            return response
-        else:
-            raise Exception("No existen notas")
+        return response
     
     def obtener_nota_por_id(self,id):
         current_app.logger.info("Service -> obtener_nota_por_id()")

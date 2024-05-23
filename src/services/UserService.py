@@ -40,10 +40,7 @@ class UserService():
     def obtener_usuarios(self):
         current_app.logger.info("Services -> obtener_usuarios()")
         response = self.userRepository.get_users()
-        if response != '[]':
-            return response
-        else:
-            raise Exception("No existen usuarios")
+        return response
     
     def obtener_usuario_por_username(self,username):
         current_app.logger.info("Service -> obtener_usuario_por_username()")
@@ -83,16 +80,10 @@ class UserService():
         current_app.logger.info("Service -> obtener_notas_por_user()")
         self.obtener_usuario_por_id(id_user)
         response = self.notaRepository.get_notes_by_user(id_user)
-        if response != '[]':
-            return response
-        else:
-            raise Exception("El usuario no tiene notas")
+        return response
         
     def obtener_listasTareas_por_user(self,user_id):
         current_app.logger.info("Service -> obtener_listaTareas_por_user()")
         self.obtener_usuario_por_id(user_id)
         response = self.listaTareasRepo.get_listasTareas_by_user(user_id)
-        if response != '[]':
-            return response
-        else:
-            raise Exception("El usuario no tiene lista de tareas")
+        return response
