@@ -59,7 +59,7 @@ class ListaTareasService():
         self.obtener_listaTareas_por_id(id_lista)
         response = self.listaTareaRepo.get_tareas(id_lista)
         return response
-        
+    
     def obtener_tarea_por_id(self,id_lista,id_task):
         current_app.logger.info("Service -> obtener_tarea_por_id()")
         self.obtener_listaTareas_por_id(id_lista)

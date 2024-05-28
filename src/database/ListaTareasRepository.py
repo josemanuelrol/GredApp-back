@@ -47,6 +47,17 @@ class ListaTareasRepository():
         response = self.db.find_one({'_id':ObjectId(id_lista)}, {'tareas':1, '_id':0})
         return json_util.dumps(response)
     
+    def get_tareas_completed(self, user_id):
+        current_app.logger.info("DB -> get_tareas_completed()")
+        taskLists = self.db.find({'user_id':user_id})
+        tasks = []
+        for taskList in taskLists:
+            for task in taskList['tareas']:
+                if task['completed']:
+                    tasks.append(task)
+        return json_util.dumps(tasks)
+
+    
     def get_tarea_by_id(self, id_lista, id_task):
         current_app.logger.info("DB -> get_tarea_by_id()")
         response = self.db.find_one({'_id':ObjectId(id_lista),'tareas':{'$elemMatch':{'_id':ObjectId(id_task)}}},{'tareas.$':1,'_id':0})
@@ -55,6 +66,7 @@ class ListaTareasRepository():
     def add_tarea(self, id_lista, task):
         current_app.logger.info("DB -> add_tarea()")
         task['completed'] = False
+        task['proridad'] = 0
         task['_id'] = ObjectId()
         response = self.db.update_one({'_id':ObjectId(id_lista)}, {'$push':{'tareas':task}})
         return int(response.modified_count)

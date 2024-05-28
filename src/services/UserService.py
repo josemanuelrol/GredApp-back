@@ -27,7 +27,6 @@ class UserService():
                 'nombre':'Bandeja de entrada',
                 'user_id':response,
                 'tareas':[],
-                'icon':''
             }
             self.listaTareasService.crear_listaTareas(listaTarea)
             if response != 'null':
@@ -86,4 +85,10 @@ class UserService():
         current_app.logger.info("Service -> obtener_listaTareas_por_user()")
         self.obtener_usuario_por_id(user_id)
         response = self.listaTareasRepo.get_listasTareas_by_user(user_id)
+        return response
+    
+    def obtener_tareas_completadas(self,user_id):
+        current_app.logger.info("Service -> obtener_tareas()")
+        self.obtener_usuario_por_id(user_id)
+        response = self.listaTareasRepo.get_tareas_completed(user_id)
         return response

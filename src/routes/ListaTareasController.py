@@ -86,7 +86,7 @@ class ListaTareasController():
             current_app.logger.info("API -> obtener_tareas()")
             response = self.listaTareasService.obtener_tareas(id)
             return Response(response, mimetype='application/json')
-            
+        
         @self.api_bp.route('listaTareas/<id>/getTask/<id_task>', methods=['GET'])
         def obtener_tarea_por_id(id,id_task):
             try:

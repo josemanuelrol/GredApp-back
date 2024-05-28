@@ -1,6 +1,5 @@
 #Imports
 from flask import request, jsonify, Response, Blueprint, current_app
-from src.models.ListaTareasNotFoundException import ListaTareasNotFoundException
 from src.services.UserService import UserService
 from src.services.AuthService import AuthService
 from src.models.UserNotFoundException import UserNotFoundException
@@ -125,3 +124,9 @@ class UserController():
                 return jsonify({'error':str(e)}),404
             except Exception as e:
                 return jsonify({'error':str(e)}),400
+            
+        @self.api_bp.route('listaTareas/getCompletedTasks/<user_id>', methods=['GET'])
+        def obtener_tareas_completadas(user_id):
+            current_app.logger.info("API -> obtener_tareas_completadas()")
+            response = self.userService.obtener_tareas_completadas(user_id)
+            return Response(response,mimetype='application/json')
