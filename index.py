@@ -1,10 +1,13 @@
 #Imports
 import os
+import locale
 from dotenv import load_dotenv
 from src.app import create_app
 from config import Config, ProductionConfig
 from flask import request, jsonify
 from src.utils.VerifyToken import VerifyToken
+
+locale.setlocale(locale.LC_ALL, 'es_ES')
 
 #Cargando variables de entorno de archivo .env
 load_dotenv()
