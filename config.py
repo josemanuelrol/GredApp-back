@@ -11,5 +11,9 @@ class Config(object):
 
 class ProductionConfig(Config):
     ENV='production'
-    MONGO_URI=''
+    MONGO_URI='mongodb+srv://user:hum6Vi6lODovK7bY@gredapp.blaorug.mongodb.net/GredApp'
     DEBUG=False
+    CONSOLE_LOGS=False
+    CONSOLE_LOGS_LEVEL="INFO"
+    FILE_LOGS=True
+    FILE_LOGS_LEVEL="INFO"
