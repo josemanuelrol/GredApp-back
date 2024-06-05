@@ -1,10 +1,9 @@
 class Config(object):
     ENV='development'
     SECRET_KEY='mi_clave_secreta'
-    MONGO_URI='mongodb://localhost:27017/gredapp'
+    MONGO_URI='mongodb+srv://user:hum6Vi6lODovK7bY@gredapp.blaorug.mongodb.net/GredApp'
     DEBUG=True
     PORT=5000
-    APPLICATION_ROOT='/api'
     CONSOLE_LOGS=True
     CONSOLE_LOGS_LEVEL="DEBUG"
     FILE_LOGS=True
