@@ -15,5 +15,5 @@ class ProductionConfig(Config):
     DEBUG=False
     CONSOLE_LOGS=False
     CONSOLE_LOGS_LEVEL="INFO"
-    FILE_LOGS=True
+    FILE_LOGS=False
     FILE_LOGS_LEVEL="INFO"
