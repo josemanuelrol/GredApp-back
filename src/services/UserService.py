@@ -36,6 +36,14 @@ class UserService():
         if user:
             raise Exception("Ya existe un usuario con ese nombre")
 
+    def cambiar_contraseña(self,user_id,new_password):
+        current_app.logger.info("Service -> cambiar_contraseña()")
+        response = self.userRepository.change_password(user_id, new_password)
+        if response > 0:
+            return response
+        else:
+            raise Exception("No se pudo cambiar la contraseñá")
+
     def obtener_usuarios(self):
         current_app.logger.info("Services -> obtener_usuarios()")
         response = self.userRepository.get_users()
@@ -69,7 +77,10 @@ class UserService():
     def eliminar_usuario(self,id):
         current_app.logger.info("Service -> eliminar_usuario()")
         self.obtener_usuario_por_id(id)
+        listaTareas = json_util.loads(self.obtener_listasTareas_por_user(id))
         response = self.userRepository.delete_user(id)
+        for listaTarea in listaTareas:
+            self.listaTareasService.eliminar_listaTareas(str(listaTarea['_id']))
         if response>0:
             return response
         else:

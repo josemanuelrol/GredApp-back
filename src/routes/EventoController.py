@@ -32,6 +32,15 @@ class EventoController():
             response = self.eventoService.obtener_eventos()
             return Response(response, mimetype='application/json')
 
+        @self.api_bp.route('/user/<id>/eventos',methods=['GET'])
+        def obtener_eventos_usuario(id):
+            try:
+                current_app.logger.info("API -> obtener_eventos_usuario()")
+                response = self.eventoService.obtener_eventos_por_usuario(id)
+                return Response(response,mimetype='application/json')
+            except Exception as e:
+                return jsonify({'error':str(e)})
+
         @self.api_bp.route('/evento/<id>', methods=['GET'])
         def obtener_evento_por_id(id):
             try:

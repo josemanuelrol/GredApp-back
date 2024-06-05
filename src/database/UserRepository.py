@@ -24,6 +24,19 @@ class UserRepository():
         
         return str(response.inserted_id)
     
+    def change_password(self,user_id, new_password):
+        current_app.logger.info("DB -> change_password()")
+        
+        encrypted_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+        new_password = encrypted_password.decode('utf-8')
+
+        body = {
+            'password':new_password
+        }
+
+        return self.update_user(user_id, body)
+    
     def get_users(self):
         current_app.logger.info("DB -> get_users()")
         response = self.db.find()

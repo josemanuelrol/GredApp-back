@@ -66,6 +66,18 @@ class UserController():
             except Exception as e:
                 return jsonify({'error':str(e)}),400
             
+        @self.api_bp.route('/user/<id>/changePassword', methods=['PUT'])
+        def cambiar_contraseña(id):
+            try:
+                current_app.logger.info("API -> cambiar_contraseña()")
+                body = request.get_json()
+                self.authService.changePassword(id,body)
+                return jsonify({
+                    'mensaje':'Contraseña modificada'
+                })
+            except Exception as e:
+                return jsonify({'error':str(e)}),400
+            
         @self.api_bp.route('/users', methods=['GET'])
         def obtener_usuarios():
             current_app.logger.info("API -> obtener_usuarios()")

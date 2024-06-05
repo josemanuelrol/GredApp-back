@@ -1,12 +1,14 @@
 #Imports
 from flask import current_app
 from src.database.EventoRepository import EventoRepository
+from src.services.UserService import UserService
 from src.models.EventoNotFoundException import EventoNotFoundException
 
 class EventoService():
     
-    def __init__(self, eventoRepository:EventoRepository):
+    def __init__(self, eventoRepository:EventoRepository, userService:UserService):
         self.eventoRepository = eventoRepository
+        self.userService = userService
 
     def crear_evento(self,body):
         current_app.logger.info("Service -> crear_evento()")
@@ -20,6 +22,13 @@ class EventoService():
         current_app.logger.info("Service -> obtener_eventos()")
         response = self.eventoRepository.get_all_events()
         return response
+    
+    def obtener_eventos_por_usuario(self,user_id):
+        current_app.logger.info("Service -> obtener_eventos_por_usuario()")
+        self.userService.obtener_usuario_por_id(user_id)
+        response = self.eventoRepository.get_all_events_by_user(user_id)
+        return response
+        
     
     def obtener_evento_por_id(self,id):
         current_app.logger.info("Service -> obtener_evento_por_id()")

@@ -20,6 +20,11 @@ class EventoRepository():
         response = self.db.find()
         return json_util.dumps(response)
     
+    def get_all_events_by_user(self, user_id):
+        current_app.logger.info("DB -> get_all_events_by_user()")
+        response = self.db.find({'user_id':user_id})
+        return json_util.dumps(response)
+    
     def get_event_by_id(self, id_event):
         current_app.logger.info("DB -> get_event_by_id()")
         response = self.db.find_one({'_id': ObjectId(id_event)})
