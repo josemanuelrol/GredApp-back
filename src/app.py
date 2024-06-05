@@ -63,13 +63,6 @@ def __configure_logging(app, config):
     console_handler.setFormatter(__verbose_formatter())
     console_handler.setLevel(config.CONSOLE_LOGS_LEVEL)
 
-    #Creamos un manejador para escribir los mensajes en un archivo
-    file_handler = RotatingFileHandler("./src/utils/log/app.log", maxBytes=1024*1024,backupCount=5)
-    file_handler.setFormatter(__verbose_formatter())
-    file_handler.setLevel(config.FILE_LOGS_LEVEL)
-
-    if config.FILE_LOGS:
-        backHandlers.append(file_handler)
     if config.CONSOLE_LOGS:
         backHandlers.append(console_handler)
 

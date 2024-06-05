@@ -6,8 +6,6 @@ class Config(object):
     PORT=5000
     CONSOLE_LOGS=True
     CONSOLE_LOGS_LEVEL="DEBUG"
-    FILE_LOGS=True
-    FILE_LOGS_LEVEL="DEBUG"
 
 class ProductionConfig(Config):
     ENV='production'
@@ -15,5 +13,3 @@ class ProductionConfig(Config):
     DEBUG=False
     CONSOLE_LOGS=False
     CONSOLE_LOGS_LEVEL="INFO"
-    FILE_LOGS=False
-    FILE_LOGS_LEVEL="INFO"
