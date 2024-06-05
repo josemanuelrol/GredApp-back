@@ -8,7 +8,7 @@ from bson import json_util
 from src.services.UserService import UserService
 
 #Configuramos la localicazión al español
-locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
+# locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 class AuthService():
 
