@@ -4,17 +4,21 @@ from src.services.UserService import UserService
 from src.services.AuthService import AuthService
 from src.models.UserNotFoundException import UserNotFoundException
 
+# Controlador que contiene los Endpoints y el tratamiento de los errores para los usuarios
 class UserController():
 
+    # Constructor
     def __init__(self, userService:UserService, authService:AuthService):
         self.api_bp = Blueprint('user', __name__, url_prefix='/api')
         self.userService = userService
         self.authService = authService
         self.init_routes()
 
+    # Método que inicializa todos los Endpoints del controlador
     def init_routes(self):
         #Aquí van los endpoints
 
+        # Endpoint encargado de realizar el login de un usuario en la aplicación
         @self.api_bp.route('/auth/login',methods=['POST'])
         def login():
             try:
@@ -34,6 +38,7 @@ class UserController():
             except Exception as e:
                 return jsonify({'error':str(e)}),400
 
+        # Endponit encargado de realizar el registro de un nuevo usuario en la aplicación
         @self.api_bp.route('/auth/register',methods=['POST'])
         def register():
             try:
@@ -53,6 +58,7 @@ class UserController():
             except Exception as e:
                 return jsonify({'error':str(e)}),400
 
+        # Endpoint encargado de crear un nuevo usuario
         @self.api_bp.route('/user', methods=['POST'])
         def crear_usuario():
             try:
@@ -65,7 +71,8 @@ class UserController():
                     })
             except Exception as e:
                 return jsonify({'error':str(e)}),400
-            
+
+        # Endpoint encargado de cambiar la contraseña de un usuario indicando su id 
         @self.api_bp.route('/user/<id>/changePassword', methods=['PUT'])
         def cambiar_contraseña(id):
             try:
@@ -77,13 +84,15 @@ class UserController():
                 })
             except Exception as e:
                 return jsonify({'error':str(e)}),400
-            
+
+        # Endpoint encargado de obtener todos los usuarios que existen   
         @self.api_bp.route('/users', methods=['GET'])
         def obtener_usuarios():
             current_app.logger.info("API -> obtener_usuarios()")
             response = self.userService.obtener_usuarios()
             return Response(response,mimetype='application/json')
 
+        # Endpoint encargado de obtener un usuario por su id
         @self.api_bp.route('/user/<id>', methods=['GET'])
         def obtener_usuario_por_id(id):
             try:
@@ -92,7 +101,8 @@ class UserController():
                 return Response(response, mimetype='application/json')
             except UserNotFoundException as e:
                 return jsonify({'error':str(e)}),404
-            
+
+        # Endpoint encargado de modificar un usuario indicando su id
         @self.api_bp.route('/user/<id>', methods=['PUT'])
         def modificar_usuario(id):
             try:
@@ -105,6 +115,7 @@ class UserController():
             except Exception as e:
                 return jsonify({'error':str(e)}),400
             
+        # Endpoint encargado de eliminar un usuario por su id
         @self.api_bp.route('/user/<id>', methods=['DELETE'])
         def eliminar_usuario(id):
             try:
@@ -116,7 +127,7 @@ class UserController():
             except Exception as e:
                 return jsonify({'error':str(e)}),400
             
-        
+        # Endpoint encargado de obtener todas las notas del usuario indicando su id
         @self.api_bp.route('/user/<id>/notas')
         def obtener_notas_por_user(id):
             try:
@@ -125,7 +136,8 @@ class UserController():
                 return Response(response, mimetype='application/json')
             except UserNotFoundException as e:
                 return jsonify({'error':str(e)}),404
-            
+
+        # Endponit encargado de obtener todas las listas de tareas del usuario indicando su id   
         @self.api_bp.route('/user/<user_id>/listaTareas', methods=['GET'])
         def obtener_listaTareas_por_user(user_id):
             try:
@@ -136,7 +148,8 @@ class UserController():
                 return jsonify({'error':str(e)}),404
             except Exception as e:
                 return jsonify({'error':str(e)}),400
-            
+
+        # Endpoint encargado de obtener todas las tareas completadas del usuario. 
         @self.api_bp.route('listaTareas/getCompletedTasks/<user_id>', methods=['GET'])
         def obtener_tareas_completadas(user_id):
             current_app.logger.info("API -> obtener_tareas_completadas()")

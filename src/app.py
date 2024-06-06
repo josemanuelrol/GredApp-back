@@ -1,6 +1,5 @@
 from flask import Flask
 import logging
-from logging.handlers import RotatingFileHandler
 from src.database.UserRepository import UserRepository
 from src.database.EventoRepository import EventoRepository
 from src.database.NotaRepository import NotaRepository
@@ -15,7 +14,7 @@ from src.routes.NotaController import NotaController
 from src.routes.EventoController import EventoController
 from src.routes.ListaTareasController import ListaTareasController
 
-
+# Método que crea y configura la aplicación Flask instanciando los repositorios, servicios y controladores. Además también configura el registro de los logs de la aplicación.
 def create_app(config):
 
     app = Flask(__name__)
@@ -49,6 +48,7 @@ def create_app(config):
     
     return app
 
+# Método que configura el tratamiento de los logs de la aplicación.
 def __configure_logging(app, config):
     
     #Eliminamos los posibles manejadores, si existen, del logger por defecto

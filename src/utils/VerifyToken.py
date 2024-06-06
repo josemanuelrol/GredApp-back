@@ -2,11 +2,13 @@
 from flask import request, current_app
 import jwt
 
+# Clase que contiene un método para verificar la validez del token
 class VerifyToken():
 
     def __init__(self):
         pass
 
+    # Método que verifica la validez del token
     def verifyToken(self):
         try:
             #Obtener el token del encabezado de autorización
